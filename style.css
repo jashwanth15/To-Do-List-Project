@@ -1,0 +1,802 @@
+:root {
+    --primary-color: #fda085;
+    --secondary-color: #f6d365;
+    --text-color: #333;
+    --bg-color: #fff;
+    --task-bg: #f9f9f9;
+    --border-color: #eee;
+    --shadow-color: rgba(0, 0, 0, 0.1);
+    --success-color: #4CAF50;
+    --error-color: #f44336;
+    --warning-color: #FF9800;
+    --info-color: #2196F3;
+}
+
+[data-theme="dark"] {
+    --primary-color: #ff9a8b;
+    --secondary-color: #ff6a88;
+    --text-color: #fff;
+    --bg-color: #1a1a1a;
+    --task-bg: #2d2d2d;
+    --border-color: #404040;
+    --shadow-color: rgba(0, 0, 0, 0.3);
+}
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Arial', sans-serif;
+    transition: background-color 0.3s, color 0.3s;
+}
+
+body {
+    background: linear-gradient(120deg, var(--secondary-color) 0%, var(--primary-color) 100%);
+    min-height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 20px;
+    color: var(--text-color);
+}
+
+.theme-switch-wrapper {
+    position: fixed;
+    top: 20px;
+    right: 20px;
+    z-index: 1000;
+}
+
+.theme-switch {
+    display: inline-block;
+    height: 34px;
+    position: relative;
+    width: 60px;
+}
+
+.theme-switch input {
+    display: none;
+}
+
+.slider {
+    background-color: #ccc;
+    bottom: 0;
+    cursor: pointer;
+    left: 0;
+    position: absolute;
+    right: 0;
+    top: 0;
+    transition: .4s;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0 5px;
+}
+
+.slider:before {
+    background-color: #fff;
+    bottom: 4px;
+    content: "";
+    height: 26px;
+    left: 4px;
+    position: absolute;
+    transition: .4s;
+    width: 26px;
+    z-index: 1;
+}
+
+.slider.round {
+    border-radius: 34px;
+}
+
+.slider.round:before {
+    border-radius: 50%;
+}
+
+input:checked + .slider {
+    background-color: #2196F3;
+}
+
+input:checked + .slider:before {
+    transform: translateX(26px);
+}
+
+.slider i {
+    color: #fff;
+    font-size: 16px;
+    z-index: 0;
+}
+
+.container {
+    background: var(--bg-color);
+    border-radius: 15px;
+    padding: 30px;
+    box-shadow: 0 0 30px var(--shadow-color);
+    width: 100%;
+    max-width: 800px;
+    animation: fadeIn 0.5s ease-in;
+}
+
+.search-section {
+    margin-bottom: 20px;
+}
+
+.search-box {
+    position: relative;
+    width: 100%;
+}
+
+.search-box i {
+    position: absolute;
+    left: 15px;
+    top: 50%;
+    transform: translateY(-50%);
+    color: #666;
+}
+
+#searchInput {
+    width: 100%;
+    padding: 12px 12px 12px 40px;
+    border: 2px solid var(--border-color);
+    border-radius: 25px;
+    font-size: 16px;
+    transition: all 0.3s;
+}
+
+#searchInput:focus {
+    outline: none;
+    border-color: var(--primary-color);
+    box-shadow: 0 0 10px rgba(253, 160, 133, 0.2);
+}
+
+.progress-section {
+    margin-bottom: 20px;
+}
+
+.progress-bar-container {
+    background: var(--border-color);
+    height: 8px;
+    border-radius: 4px;
+    overflow: hidden;
+    margin: 10px 0;
+}
+
+.progress-bar {
+    height: 100%;
+    background: var(--primary-color);
+    width: 0;
+    transition: width 0.5s ease-in-out;
+}
+
+.progress-bar.pulse {
+    animation: pulse 0.5s ease-in-out;
+}
+
+.progress-stats {
+    text-align: right;
+    margin-top: 5px;
+    font-size: 14px;
+    color: var(--text-color);
+}
+
+.input-section {
+    display: flex;
+    gap: 10px;
+    margin-bottom: 20px;
+    flex-wrap: wrap;
+}
+
+#taskInput, #taskCategory, #taskPriority, #taskDueDate {
+    padding: 12px;
+    border: 2px solid var(--border-color);
+    border-radius: 8px;
+    font-size: 16px;
+    background: var(--bg-color);
+    color: var(--text-color);
+    transition: all 0.3s;
+}
+
+#taskInput {
+    flex: 2;
+}
+
+#taskCategory, #taskPriority, #taskDueDate {
+    flex: 1;
+}
+
+#taskInput:focus, #taskCategory:focus, #taskPriority:focus, #taskDueDate:focus {
+    outline: none;
+    border-color: var(--primary-color);
+    box-shadow: 0 0 10px rgba(253, 160, 133, 0.2);
+}
+
+#addTask {
+    padding: 12px 24px;
+    background: var(--primary-color);
+    border: none;
+    border-radius: 8px;
+    color: white;
+    font-size: 16px;
+    cursor: pointer;
+    transition: all 0.3s;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+#addTask:hover {
+    background: var(--secondary-color);
+    transform: translateY(-2px);
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+}
+
+#addTask i {
+    font-size: 14px;
+}
+
+.filters, .category-filters {
+    display: flex;
+    gap: 10px;
+    margin-bottom: 20px;
+    justify-content: center;
+    flex-wrap: wrap;
+}
+
+.filter-btn, .category-btn {
+    padding: 8px 16px;
+    border: none;
+    border-radius: 20px;
+    background: var(--task-bg);
+    color: var(--text-color);
+    cursor: pointer;
+    transition: all 0.3s;
+}
+
+.filter-btn:hover, .category-btn:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 2px 5px var(--shadow-color);
+}
+
+.filter-btn.active, .category-btn.active {
+    background: var(--primary-color);
+    color: white;
+    transform: scale(1.05);
+}
+
+.sort-options {
+    margin-bottom: 20px;
+    text-align: center;
+}
+
+#sortBy {
+    padding: 8px 16px;
+    border: 2px solid var(--border-color);
+    border-radius: 8px;
+    font-size: 16px;
+    cursor: pointer;
+    background: var(--bg-color);
+    color: var(--text-color);
+    transition: all 0.3s;
+}
+
+#sortBy:focus {
+    outline: none;
+    border-color: var(--primary-color);
+}
+
+.task-list-container {
+    margin-bottom: 20px;
+}
+
+#taskList {
+    list-style: none;
+}
+
+.task-item {
+    background: var(--task-bg);
+    border-radius: 10px;
+    margin-bottom: 10px;
+    transition: all 0.3s;
+    animation: slideIn 0.3s ease-out;
+    overflow: hidden;
+    cursor: move;
+}
+
+.task-item:hover {
+    transform: translateX(5px);
+    box-shadow: 0 5px 15px var(--shadow-color);
+}
+
+.task-main {
+    display: flex;
+    align-items: center;
+    padding: 15px;
+    gap: 10px;
+}
+
+.task-checkbox {
+    width: 20px;
+    height: 20px;
+    cursor: pointer;
+    transition: transform 0.2s;
+    accent-color: var(--primary-color);
+}
+
+.task-checkbox:checked {
+    transform: scale(1.2);
+}
+
+.task-text {
+    flex: 1;
+    font-size: 16px;
+    color: var(--text-color);
+}
+
+.task-details {
+    display: flex;
+    gap: 10px;
+    margin-left: 10px;
+    font-size: 14px;
+}
+
+.task-category, .task-priority, .task-due-date {
+    padding: 4px 8px;
+    border-radius: 12px;
+    font-size: 12px;
+}
+
+.task-category {
+    background: #e3f2fd;
+    color: #1976d2;
+}
+
+.task-priority {
+    background: #fff3e0;
+    color: #f57c00;
+}
+
+.task-priority.high {
+    background: #ffebee;
+    color: #d32f2f;
+}
+
+.task-due-date {
+    background: #f5f5f5;
+    color: #616161;
+}
+
+.task-due-date.overdue {
+    background: #ffebee;
+    color: #d32f2f;
+}
+
+.task-actions {
+    display: flex;
+    gap: 5px;
+}
+
+.action-btn {
+    background: none;
+    border: none;
+    cursor: pointer;
+    font-size: 16px;
+    transition: all 0.3s;
+    padding: 5px;
+    border-radius: 5px;
+    color: var(--text-color);
+}
+
+.action-btn:hover {
+    transform: scale(1.2);
+    background: rgba(0, 0, 0, 0.05);
+}
+
+.edit-btn { color: var(--success-color); }
+.delete-btn { color: var(--error-color); }
+.add-subtask { color: var(--info-color); }
+.add-note { color: var(--warning-color); }
+.add-tag { color: #9C27B0; }
+
+.task-notes {
+    padding: 10px 15px;
+    background: #fff3e0;
+    border-top: 1px solid #ffe0b2;
+    font-size: 14px;
+    color: #f57c00;
+}
+
+.task-tags {
+    padding: 10px 15px;
+    background: var(--task-bg);
+    border-top: 1px solid var(--border-color);
+    display: flex;
+    flex-wrap: wrap;
+    gap: 5px;
+}
+
+.tag {
+    background: #e3f2fd;
+    color: #1976d2;
+    padding: 3px 8px;
+    border-radius: 12px;
+    font-size: 12px;
+    display: flex;
+    align-items: center;
+    gap: 5px;
+}
+
+.remove-tag {
+    background: none;
+    border: none;
+    color: #1976d2;
+    cursor: pointer;
+    font-size: 14px;
+    padding: 0 2px;
+}
+
+.remove-tag:hover {
+    color: #d32f2f;
+}
+
+.subtasks {
+    padding: 10px 15px;
+    background: var(--task-bg);
+    border-top: 1px solid var(--border-color);
+}
+
+.subtask {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 5px 0;
+}
+
+.subtask-checkbox {
+    width: 16px;
+    height: 16px;
+    cursor: pointer;
+    accent-color: var(--primary-color);
+}
+
+.subtask-text {
+    font-size: 14px;
+    color: var(--text-color);
+}
+
+.subtask-text.completed {
+    text-decoration: line-through;
+    color: #888;
+}
+
+.task-stats {
+    display: flex;
+    justify-content: space-around;
+    margin: 20px 0;
+    padding: 20px 0;
+    border-top: 1px solid var(--border-color);
+    font-size: 14px;
+}
+
+.task-stats span {
+    padding: 5px 10px;
+    border-radius: 15px;
+    background: var(--task-bg);
+    transition: all 0.3s;
+}
+
+.task-stats span:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 2px 5px var(--shadow-color);
+}
+
+.quick-actions {
+    display: flex;
+    gap: 10px;
+    justify-content: center;
+    margin-top: 20px;
+}
+
+.action-button {
+    padding: 10px 20px;
+    border: none;
+    border-radius: 8px;
+    background: var(--task-bg);
+    color: var(--text-color);
+    cursor: pointer;
+    transition: all 0.3s;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.action-button:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 2px 5px var(--shadow-color);
+}
+
+.action-button i {
+    font-size: 14px;
+}
+
+.notification {
+    position: fixed;
+    top: 20px;
+    right: 20px;
+    padding: 15px 25px;
+    border-radius: 8px;
+    color: white;
+    font-size: 14px;
+    z-index: 1000;
+    animation: slideIn 0.3s ease-out;
+    box-shadow: 0 2px 10px var(--shadow-color);
+}
+
+.notification.success {
+    background: var(--success-color);
+}
+
+.notification.error {
+    background: var(--error-color);
+}
+
+.confetti-container {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    pointer-events: none;
+    z-index: 999;
+}
+
+/* Animations */
+@keyframes fadeIn {
+    from { opacity: 0; transform: translateY(-20px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes slideIn {
+    from {
+        transform: translateX(20px);
+        opacity: 0;
+    }
+    to {
+        transform: translateX(0);
+        opacity: 1;
+    }
+}
+
+@keyframes fadeOut {
+    from {
+        opacity: 1;
+    }
+    to {
+        opacity: 0;
+    }
+}
+
+@keyframes bounce {
+    0%, 100% {
+        transform: scale(1);
+    }
+    50% {
+        transform: scale(1.05);
+    }
+}
+
+@keyframes pulse {
+    0% {
+        transform: scale(1);
+    }
+    50% {
+        transform: scale(1.02);
+    }
+    100% {
+        transform: scale(1);
+    }
+}
+
+/* Drag and Drop Styles */
+.sortable-ghost {
+    opacity: 0.5;
+    background: var(--primary-color);
+}
+
+.sortable-chosen {
+    box-shadow: 0 5px 15px var(--shadow-color);
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+    .input-section {
+        flex-direction: column;
+    }
+    
+    #taskInput, #taskCategory, #taskPriority, #taskDueDate {
+        width: 100%;
+    }
+    
+    .filters, .category-filters {
+        flex-direction: column;
+        align-items: center;
+    }
+    
+    .task-main {
+        flex-direction: column;
+        align-items: flex-start;
+    }
+    
+    .task-details {
+        margin: 10px 0;
+        flex-wrap: wrap;
+    }
+    
+    .task-actions {
+        margin-top: 10px;
+        width: 100%;
+        justify-content: space-between;
+    }
+
+    .quick-actions {
+        flex-direction: column;
+    }
+
+    .action-button {
+        width: 100%;
+        justify-content: center;
+    }
+}
+
+/* Add animation to buttons */
+.btn {
+    transition: all 0.3s ease;
+}
+
+.btn:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 8px var(--shadow-color);
+}
+
+/* Add animation to action buttons */
+.action-btn {
+    transition: all 0.3s ease;
+}
+
+.action-btn:hover {
+    transform: scale(1.1);
+}
+
+/* Add animation to checkboxes */
+.task-checkbox,
+.subtask-checkbox {
+    transition: all 0.3s ease;
+}
+
+.task-checkbox:checked,
+.subtask-checkbox:checked {
+    transform: scale(1.1);
+}
+
+/* Add animation to tags */
+.tag {
+    transition: all 0.3s ease;
+}
+
+.tag:hover {
+    transform: translateY(-2px);
+}
+
+/* Add animation to remove tag button */
+.remove-tag {
+    transition: all 0.3s ease;
+}
+
+.remove-tag:hover {
+    transform: scale(1.2);
+    color: var(--error-color);
+}
+
+/* Add animation to task text when completed */
+.task-text.completed {
+    transition: all 0.3s ease;
+}
+
+/* Add animation to subtask text when completed */
+.subtask-text.completed {
+    transition: all 0.3s ease;
+}
+
+/* Add animation to category and priority badges */
+.task-category,
+.task-priority,
+.task-due-date {
+    transition: all 0.3s ease;
+}
+
+.task-category:hover,
+.task-priority:hover,
+.task-due-date:hover {
+    transform: translateY(-2px);
+}
+
+/* Add animation to notes */
+.task-notes {
+    transition: all 0.3s ease;
+}
+
+.task-notes:hover {
+    transform: translateX(5px);
+}
+
+/* Add animation to subtasks container */
+.subtasks {
+    transition: all 0.3s ease;
+}
+
+.subtasks:hover {
+    transform: translateX(5px);
+}
+
+/* Add animation to filter buttons */
+.filter-btn {
+    transition: all 0.3s ease;
+}
+
+.filter-btn:hover {
+    transform: translateY(-2px);
+}
+
+.filter-btn.active {
+    animation: pulse 1s infinite;
+}
+
+/* Add animation to category buttons */
+.category-btn {
+    transition: all 0.3s ease;
+}
+
+.category-btn:hover {
+    transform: translateY(-2px);
+}
+
+.category-btn.active {
+    animation: pulse 1s infinite;
+}
+
+/* Add animation to sort select */
+#sortBy {
+    transition: all 0.3s ease;
+}
+
+#sortBy:hover {
+    transform: translateY(-2px);
+}
+
+/* Add animation to search input */
+#searchInput {
+    transition: all 0.3s ease;
+}
+
+#searchInput:focus {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 8px var(--shadow-color);
+}
+
+/* Add animation to theme switch */
+.theme-switch label {
+    transition: all 0.3s ease;
+}
+
+.theme-switch label:hover {
+    transform: scale(1.1);
+}
+
+/* Add animation to quick action buttons */
+.quick-actions button {
+    transition: all 0.3s ease;
+}
+
+.quick-actions button:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 8px var(--shadow-color);
+} 
